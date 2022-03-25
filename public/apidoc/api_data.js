@@ -1,0 +1,346 @@
+define({ "api": [
+  {
+    "type": "get",
+    "url": "/icon/create_icon",
+    "title": "生成字体图标",
+    "description": "<p>生成或更新某个项目的字体图标</p>",
+    "name": "create_icon",
+    "group": "icon",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>项目名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "result",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{code: 0, data: '项目名称'}",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3009/icon/create_icon"
+      }
+    ],
+    "version": "1.0.0",
+    "filename": "routes/icon.js",
+    "groupTitle": "icon"
+  },
+  {
+    "type": "get",
+    "url": "/icon/get_icon_list",
+    "title": "获取icon list",
+    "description": "<p>获取icon list</p>",
+    "name": "get_icon_list",
+    "group": "icon",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>项目名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "result",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{code: 0, data: []}",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3009/icon/get_icon_list"
+      }
+    ],
+    "version": "1.0.0",
+    "filename": "routes/icon.js",
+    "groupTitle": "icon"
+  },
+  {
+    "type": "post",
+    "url": "/icon/upload_svg",
+    "title": "上传svg文件",
+    "description": "<p>上传svg文件</p>",
+    "name": "upload_svg",
+    "group": "icon",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>项目名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "files",
+            "description": "<p>文件</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "result",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{code: 0, data: []}",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3009/icon/upload_svg"
+      }
+    ],
+    "version": "1.0.0",
+    "filename": "routes/icon.js",
+    "groupTitle": "icon"
+  },
+  {
+    "type": "get",
+    "url": "/icon/add_project",
+    "title": "添加项目",
+    "description": "<p>新建项目</p>",
+    "name": "add_project",
+    "group": "project",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>项目名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "result",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{code: 0, data: '项目名称'}",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3009/icon/add_project"
+      }
+    ],
+    "version": "1.0.0",
+    "filename": "routes/icon.js",
+    "groupTitle": "project"
+  },
+  {
+    "type": "get",
+    "url": "/icon/delete_project",
+    "title": "删除项目",
+    "description": "<p>删除项目</p>",
+    "name": "delete_project",
+    "group": "project",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>项目名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "result",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{code: 0, data: '项目名称'}",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3009/icon/delete_project"
+      }
+    ],
+    "version": "1.0.0",
+    "filename": "routes/icon.js",
+    "groupTitle": "project"
+  },
+  {
+    "type": "get",
+    "url": "/icon/get_projects",
+    "title": "获取项目列表",
+    "description": "<p>获取项目列表</p>",
+    "name": "get_projects",
+    "group": "project",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "result",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{code: 0, data: []}",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3009/icon/get_projects"
+      }
+    ],
+    "version": "1.0.0",
+    "filename": "routes/icon.js",
+    "groupTitle": "project"
+  },
+  {
+    "type": "get",
+    "url": "/icon/update_project",
+    "title": "修改项目",
+    "description": "<p>修改项目名称</p>",
+    "name": "update_project",
+    "group": "project",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>项目名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "new_name",
+            "description": "<p>新名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "result",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{code: 0, data: '项目名称'}",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3009/icon/update_project"
+      }
+    ],
+    "version": "1.0.0",
+    "filename": "routes/icon.js",
+    "groupTitle": "project"
+  }
+] });
