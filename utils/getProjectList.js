@@ -16,6 +16,7 @@ const getList = () => {
       fs.readdir(dist, function(err, files){
         if (!files || files.length === 0) {
           resolve([])
+          return
         }
         for (let i = 0; i < files.length; i++) {
           fs.stat(path.join(dist, files[i]), async function (err, data) {
