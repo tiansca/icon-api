@@ -14,7 +14,7 @@ const getList = () => {
     let count = 0
     try {
       fs.readdir(dist, function(err, files){
-        if (files.length === 0) {
+        if (!files || files.length === 0) {
           resolve([])
         }
         for (let i = 0; i < files.length; i++) {
