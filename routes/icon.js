@@ -209,6 +209,7 @@ router.post('/upload_svg', async function (req, res, next) {
       return
     }
     if (!err) {
+      console.log('filesList', filesList)
       for (let a = 0; a < filesList.length; a++) {
         try {
           if (filesList[a].mimetype === 'image/svg+xml') {

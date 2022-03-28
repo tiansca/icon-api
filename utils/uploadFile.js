@@ -15,6 +15,7 @@ const uploadFile = (file, name) => {
     //     resolve()
     //   }
     // })
+    console.log(file, name)
     fs.readFile(file.filepath, function (error, data) {
       fs.writeFile(path.resolve(src, name, file.originalFilename), data, function (err) {
         if (err) reject(err);
