@@ -224,6 +224,8 @@ router.post('/upload_svg', async function (req, res, next) {
         code: 0,
         data: iconClass
       })
+    } else {
+      res.send(err)
     }
   });
 });
