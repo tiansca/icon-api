@@ -3,11 +3,11 @@ const pathConfig = require('../config/path')
 const fileExists = require('../utils/fileExists')
 const fs = require('fs')
 
-let src = process.cwd()
+let src = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.iconPath.length; a++) {
   src = path.resolve(src, pathConfig.iconPath[a])
 }
-let dist = process.cwd()
+let dist = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.fontPath.length; a++) {
   dist = path.resolve(dist, pathConfig.fontPath[a])
 }
