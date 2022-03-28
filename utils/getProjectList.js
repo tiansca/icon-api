@@ -3,14 +3,15 @@ const pathConfig = require('../config/path')
 const fs = require('fs')
 const getIconList = require('../utils/getIconList')
 
-let dist = process.cwd()
+let dist = path.resolve(__dirname, '../')
+console.log(dist)
 for (let a = 0; a < pathConfig.fontPath.length; a++) {
   dist = path.resolve(dist, pathConfig.fontPath[a])
 }
 
 const getList = () => {
   return new Promise(async (resolve, reject) => {
-    console.log(process.cwd(), __dirname)
+    // console.log(process.cwd(), __dirname)
     const dirs = [];
     let count = 0
     try {
