@@ -10,6 +10,7 @@ for (let a = 0; a < pathConfig.fontPath.length; a++) {
 
 const getList = () => {
   return new Promise(async (resolve, reject) => {
+    console.log(process.cwd(), __dirname)
     const dirs = [];
     let count = 0
     try {
