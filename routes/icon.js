@@ -14,7 +14,7 @@ const path = require('path');
 const pathConfig = require('../config/path')
 const fs = require('fs')
 
-let src = path.resolve(__dirname)
+let src = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.iconPath.length; a++) {
   src = path.resolve(src, pathConfig.iconPath[a])
 }
