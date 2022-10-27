@@ -39,6 +39,7 @@ const creatFont = (name) => {
       return
     }
     await editSvg(path.resolve(src, name))
+    console.log('svg目录', path.resolve(src, name))
     svgtofont({
       src: path.resolve(src, name), // svg path
       dist: path.resolve(dist, name), // output path
@@ -47,7 +48,9 @@ const creatFont = (name) => {
       svgicons2svgfont: {
         fontHeight: 64, // 字体高度
         normalize: true // 通过将图标缩放到最高图标的高度来标准化图标。
-      }
+      },
+      website : null,
+      emptyDist: true
     }).then(async () => {
       resolve({
         name,
