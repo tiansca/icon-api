@@ -7,7 +7,7 @@ npm install
 
 生成api文档 npm run apidoc
 
-浏览器访问 [http://localhost:3009/apidoc](http://localhost:3009/apidoc)
+浏览器访问 [http://localhost:3013/apidoc](http://localhost:3013/apidoc)
 
 本项目是一个fontIcon管理系统，用户上传svg图标，自动生成css，支持图标预览和下载
 
