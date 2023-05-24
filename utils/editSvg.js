@@ -31,16 +31,22 @@ const editSvg = (src) => {
             for (let b = 0; b < rect.length; b++) {
               if (rect[b].hasAttribute('fill')) {
                 rect[b].remove()
+              } else {
+                rect[b].setAttribute('fill', 'none')
               }
             }
           }
           // 删除id包含“Background”的path
-          const path = document.querySelectorAll('path')
+          const path = document.querySelectorAll('path, polyline')
           if (path) {
             for (let c = 0; c < path.length; c++) {
               const pathId = path[c].getAttribute('id')
               if (pathId && pathId.toLowerCase().indexOf('background') !== -1) {
                 path[c].remove()
+              }
+              // 如果path有stroke属性，则添加fill=none
+              if (path[c].getAttribute('stroke') && path[c].getAttribute('stroke') !== 'none') {
+                path[c].setAttribute('fill', 'none')
               }
             }
           }
