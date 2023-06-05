@@ -13,6 +13,9 @@ const uploadFile = require('../utils/uploadFile')
 const path = require('path');
 const pathConfig = require('../config/path')
 const fs = require('fs')
+const userList = require("../config/user");
+const login = require("../utils/login");
+const isAdmin = require("../utils/isAdmin");
 
 let src = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.iconPath.length; a++) {
@@ -23,6 +26,27 @@ for (let a = 0; a < pathConfig.iconPath.length; a++) {
 // var update = require('../utils/update')
 // var encrypt = require('../utils/encrypt')
 
+// 判断header是否有token
+router.use(async function (req, res, next) {
+  if (req.headers && req.headers.token) {
+    try {
+      const userObj = JSON.parse(Buffer.from(req.headers.token, 'base64').toString('ascii'))
+      const data = await login(userObj.name, userObj.password)
+      next()
+    } catch (e) {
+      res.send({
+        code: -1,
+        message: '请登录'
+      })
+    }
+  } else {
+    res.send({
+      code: -1,
+      message: '请登录'
+    })
+  }
+});
+
 /**
  * @api {get} /icon/create_icon 生成字体图标
  * @apiDescription 生成或更新某个项目的字体图标
@@ -32,7 +56,7 @@ for (let a = 0; a < pathConfig.iconPath.length; a++) {
  * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {code: 0, data: '项目名称'}
- * @apiSampleRequest http://localhost:3009/icon/create_icon
+ * @apiSampleRequest http://localhost:3013/icon/create_icon
  * @apiVersion 1.0.0
  */
 router.get('/create_icon', async function (req, res, next) {
@@ -63,7 +87,7 @@ router.get('/create_icon', async function (req, res, next) {
  * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {code: 0, data: '项目名称'}
- * @apiSampleRequest http://localhost:3009/icon/add_project
+ * @apiSampleRequest http://localhost:3013/icon/add_project
  * @apiVersion 1.0.0
  */
 router.get('/add_project', async function (req, res, next) {
@@ -94,7 +118,7 @@ router.get('/add_project', async function (req, res, next) {
  * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {code: 0, data: '项目名称'}
- * @apiSampleRequest http://localhost:3009/icon/update_project
+ * @apiSampleRequest http://localhost:3013/icon/update_project
  * @apiVersion 1.0.0
  */
 router.get('/update_project', async function (req, res, next) {
@@ -126,12 +150,14 @@ router.get('/update_project', async function (req, res, next) {
  * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {code: 0, data: '项目名称'}
- * @apiSampleRequest http://localhost:3009/icon/delete_project
+ * @apiSampleRequest http://localhost:3013/icon/delete_project
  * @apiVersion 1.0.0
  */
 router.get('/delete_project', async function (req, res, next) {
   const name = req.query.name
   try {
+    await isAdmin(req.headers.token)
+    console.log('通过')
     const data = await deleteProject(name)
     console.log(data)
     res.send({
@@ -155,7 +181,7 @@ router.get('/delete_project', async function (req, res, next) {
  * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {code: 0, data: []}
- * @apiSampleRequest http://localhost:3009/icon/get_projects
+ * @apiSampleRequest http://localhost:3013/icon/get_projects
  * @apiVersion 1.0.0
  */
 router.get('/get_projects', async function (req, res, next) {
@@ -185,7 +211,7 @@ router.get('/get_projects', async function (req, res, next) {
  * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {code: 0, data: []}
- * @apiSampleRequest http://localhost:3009/icon/upload_svg
+ * @apiSampleRequest http://localhost:3013/icon/upload_svg
  * @apiVersion 1.0.0
  */
 router.post('/upload_svg', async function (req, res, next) {
@@ -239,7 +265,7 @@ router.post('/upload_svg', async function (req, res, next) {
  * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {code: 0, data: []}
- * @apiSampleRequest http://localhost:3009/icon/get_icon_list
+ * @apiSampleRequest http://localhost:3013/icon/get_icon_list
  * @apiVersion 1.0.0
  */
 router.get('/get_icon_list', async function (req, res, next) {
@@ -278,7 +304,7 @@ router.get('/get_icon_list', async function (req, res, next) {
  * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {code: 0, data: []}
- * @apiSampleRequest http://localhost:3009/icon/delete_icon
+ * @apiSampleRequest http://localhost:3013/icon/delete_icon
  * @apiVersion 1.0.0
  */
 router.get('/delete_icon', async function (req, res, next) {
@@ -292,6 +318,7 @@ router.get('/delete_icon', async function (req, res, next) {
     return
   }
   try {
+    await isAdmin(req.headers.token) // 校验权限
     fs.unlink(path.resolve(src, name, `${className}.svg`), (err) => {
       if (!err) {
         res.send({
@@ -324,7 +351,7 @@ router.get('/delete_icon', async function (req, res, next) {
  * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {code: 0, data: []}
- * @apiSampleRequest http://localhost:3009/icon/download
+ * @apiSampleRequest http://localhost:3013/icon/download
  * @apiVersion 1.0.0
  */
 router.get('/download', async function (req, res, next) {

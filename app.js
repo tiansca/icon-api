@@ -6,6 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var icon = require('./routes/icon');
+const userList = require("./config/user");
+const login = require('./utils/login')
 
 var app = express();
 
@@ -28,18 +30,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// 判断header是否有userid
-// app.use(function(req, res, next) {
-//   if (req.headers && req.headers.userid) {
-//     next()
-//   } else {
-//     res.send({
-//       code: -1,
-//       message: '缺少header'
-//     })
-//   }
-// });
 
 app.use('/', indexRouter);
 app.use('/icon', icon);
