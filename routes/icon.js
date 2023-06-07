@@ -26,11 +26,18 @@ for (let a = 0; a < pathConfig.iconPath.length; a++) {
 // var update = require('../utils/update')
 // var encrypt = require('../utils/encrypt')
 
+const whiteList = ['/download']
+
 // 判断header是否有token
 router.use(async function (req, res, next) {
-  if (req.headers && req.headers.token) {
+  // 放行白名单接口
+  if (whiteList.includes(req.path)) {
+    next()
+    return
+  }
+  if (req.headers && req.headers.authorization) {
     try {
-      const userObj = JSON.parse(Buffer.from(req.headers.token, 'base64').toString('ascii'))
+      const userObj = JSON.parse(Buffer.from(req.headers.authorization, 'base64').toString('ascii'))
       const data = await login(userObj.name, userObj.password)
       next()
     } catch (e) {
@@ -156,7 +163,7 @@ router.get('/update_project', async function (req, res, next) {
 router.get('/delete_project', async function (req, res, next) {
   const name = req.query.name
   try {
-    await isAdmin(req.headers.token)
+    await isAdmin(req.headers.authorization)
     console.log('通过')
     const data = await deleteProject(name)
     console.log(data)
@@ -318,7 +325,7 @@ router.get('/delete_icon', async function (req, res, next) {
     return
   }
   try {
-    await isAdmin(req.headers.token) // 校验权限
+    await isAdmin(req.headers.authorization) // 校验权限
     fs.unlink(path.resolve(src, name, `${className}.svg`), (err) => {
       if (!err) {
         res.send({
