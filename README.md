@@ -15,7 +15,7 @@ config/path.js中配置两个相对路径，iconPath:存放用户上传的svg；
 
 生成的css文件放在public下，不需要另作操作就能以静态资源的方式供外部访问
 
-用户列表在config/user.js中配置
+用户列表在config/user.js中配置, admin角色拥有删除项目和图标的权限，开发角色只能预览和上传。
 
 
 
