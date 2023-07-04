@@ -15,5 +15,7 @@ config/path.js中配置两个相对路径，iconPath:存放用户上传的svg；
 
 生成的css文件放在public下，不需要另作操作就能以静态资源的方式供外部访问
 
+config-user分支提供了登录和权限控制的功能
+
 
 
