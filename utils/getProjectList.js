@@ -24,12 +24,16 @@ const getList = () => {
           fs.stat(path.join(dist, files[i]), async function (err, data) {
             const isFile = data.isFile()
             if (!isFile) {
+              const fontPath = [...pathConfig.fontPath]
+              fontPath.shift()
+              const fontPathStr = fontPath.join('/')
               dirs.push({
                 name: files[i],
                 updateTime: data.mtime,
                 updateTimestamp: data.mtime.valueOf(),
                 iconList: await getIconList(files[i]),
-                cssUrl: `fonts/${files[i]}/${files[i]}.css` //css链接
+                cssUrl: `${fontPathStr}/${files[i]}/${files[i]}.css`, //css链接
+                jsUrl: `${fontPathStr}/${files[i]}/${files[i]}.js`
               });
             } else {
               console.log(files[i])

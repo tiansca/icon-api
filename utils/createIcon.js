@@ -4,6 +4,7 @@ const pathConfig = require('../config/path')
 const fileExists = require('../utils/fileExists')
 const getIconList = require('../utils/getIconList')
 const editSvg = require('../utils/editSvg')
+const createJs = require('../utils/createJs')
 
 let src = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.iconPath.length; a++) {
@@ -52,10 +53,20 @@ const creatFont = (name) => {
       website : null,
       emptyDist: true
     }).then(async () => {
+      // 创建js
+      try {
+        await createJs(name)
+      } catch (e) {
+        return reject(e)
+      }
+      const fontPath = [...pathConfig.fontPath]
+      fontPath.shift()
+      const fontPathStr = fontPath.join('/')
       resolve({
         name,
         classList: await getIconList(name),
-        cssUrl: `fonts/${name}/${name}.css`
+        cssUrl: `${fontPathStr}/${name}/${name}.css`,
+        jsUrl: `${fontPathStr}/${name}/${name}.js`
       })
     })
   })

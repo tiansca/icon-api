@@ -286,10 +286,14 @@ router.get('/get_icon_list', async function (req, res, next) {
   }
   try {
     const data = await getIconList(name)
-    console.log(data)
+    // console.log('path', )
+    const fontPath = [...pathConfig.fontPath]
+    fontPath.shift()
+    const fontPathStr = fontPath.join('/')
+    // console.log('path', fontPathStr)
     res.send({
       code: 0,
-      data: {iconList: data, cssUrl: `fonts/${name}/${name}.css`}
+      data: {iconList: data, cssUrl: `${fontPathStr}/${name}/${name}.css`, jsUrl: `${fontPathStr}/${name}/${name}.js`}
     })
   } catch (e) {
     console.log(e)

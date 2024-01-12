@@ -1,11 +1,11 @@
 @font-face {
   font-family: "menu";
-  src: url('menu.eot?t=1648201725466'); /* IE9*/
-  src: url('menu.eot?t=1648201725466#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url("menu.woff2?t=1648201725466") format("woff2"),
-  url("menu.woff?t=1648201725466") format("woff"),
-  url('menu.ttf?t=1648201725466') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('menu.svg?t=1648201725466#menu') format('svg'); /* iOS 4.1- */
+  src: url('menu.eot?t=1705042651451'); /* IE9*/
+  src: url('menu.eot?t=1705042651451#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("menu.woff2?t=1705042651451") format("woff2"),
+  url("menu.woff?t=1705042651451") format("woff"),
+  url('menu.ttf?t=1705042651451') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('menu.svg?t=1705042651451#menu') format('svg'); /* iOS 4.1- */
 }
 
 [class^="menu-"], [class*=" menu-"] {
@@ -24,4 +24,6 @@
 .menu-24:before { content: "\ea05"; }
 .menu-25:before { content: "\ea06"; }
 .menu-click:before { content: "\ea07"; }
-.menu-View:before { content: "\ea08"; }
+.menu-user:before { content: "\ea08"; }
+.menu-View:before { content: "\ea09"; }
+.menu-雪花:before { content: "\ea0a"; }
