@@ -3,7 +3,7 @@ const path = require('path');
 const jsdom = require("jsdom");
 const JSDOM = jsdom.JSDOM;
 
-const editSvg = (src) => {
+const editSvg = (src, removeColor = false) => {
   return new Promise((resolve, reject) => {
     fs.readdir(src, function(err, files) {
       let count = 0
@@ -37,22 +37,35 @@ const editSvg = (src) => {
             }
           }
           // 删除id包含“Background”的path
-          const path = document.querySelectorAll('path, polyline')
+          const path = document.querySelectorAll('path, polyline, g')
           if (path) {
             for (let c = 0; c < path.length; c++) {
               const pathId = path[c].getAttribute('id')
               if (pathId && pathId.toLowerCase().indexOf('background') !== -1) {
                 path[c].remove()
               }
-              // 如果path有stroke属性，则添加fill=none
-              if (path[c].getAttribute('stroke') && path[c].getAttribute('stroke') !== 'none') {
-                path[c].setAttribute('fill', 'none')
+              // 删除fill属性
+              if (removeColor) {
+                const fill = path[c].getAttribute('fill')
+                let stroke = path[c].getAttribute('stroke')
+                if (stroke === 'none') {
+                  stroke = null
+                }
+                if (fill && fill !== 'currentColor' && !stroke) {
+                  path[c].setAttribute('fill', 'currentColor')
+                } else if (stroke && stroke !== 'currentColor') {
+                  path[c].setAttribute('stroke', 'currentColor')
+                }
               }
             }
           }
+          // 给svg添加透明填充
+          if (document.querySelector('svg')) {
+            document.querySelector('svg').setAttribute('fill', 'transparent')
+          }
           // const content = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' + document.querySelector('svg').outerHTML
           const content = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' + document.querySelector('svg').outerHTML
-          console.log(content)
+          // console.log(content)
           fs.writeFile(filePath, content, (err) => {
             count++
             console.log(count, files.length)

@@ -2,6 +2,7 @@ const path = require('path');
 const pathConfig = require('../config/path')
 const fs = require('fs')
 const getIconList = require('../utils/getIconList')
+const db = require('./jsonDb')
 
 let dist = path.resolve(__dirname, '../')
 console.log(dist)
@@ -27,13 +28,29 @@ const getList = () => {
               const fontPath = [...pathConfig.fontPath]
               fontPath.shift()
               const fontPathStr = fontPath.join('/')
+              await db.reload()
+              let removeColor = true
+              try {
+                removeColor = await db.getData(`/${files[i]}/removeColor`)
+              } catch (e) {
+                console.log(e)
+              }
+              let model = 'css'
+              try {
+                model = await db.getData(`/${files[i]}/model`)
+                console.log('get model', model)
+              } catch (e) {
+                console.log(e)
+              }
               dirs.push({
                 name: files[i],
                 updateTime: data.mtime,
                 updateTimestamp: data.mtime.valueOf(),
                 iconList: await getIconList(files[i]),
                 cssUrl: `${fontPathStr}/${files[i]}/${files[i]}.css`, //css链接
-                jsUrl: `${fontPathStr}/${files[i]}/${files[i]}.js`
+                jsUrl: `${fontPathStr}/${files[i]}/${files[i]}.js`,
+                removeColor: removeColor,
+                model: model
               });
             } else {
               console.log(files[i])

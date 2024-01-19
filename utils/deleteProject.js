@@ -3,6 +3,9 @@ const path = require('path');
 const pathConfig = require('../config/path')
 const fileExists = require('../utils/fileExists')
 const fs = require('fs')
+const {calculateMac} = require("request/lib/hawk");
+const {JsonDB, Config} = require("node-json-db");
+var db = new JsonDB(new Config("iconDataBase", true, false, '/'));
 
 let src = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.iconPath.length; a++) {
@@ -18,6 +21,7 @@ const deleteProject = (name) => {
     try {
       await deleteDir(path.resolve(dist, name))
       await deleteDir(path.resolve(src, name))
+      await db.delete(`/${name}`);
       resolve(name)
     } catch (e) {
       let err = e

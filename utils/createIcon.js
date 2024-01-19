@@ -5,6 +5,8 @@ const fileExists = require('../utils/fileExists')
 const getIconList = require('../utils/getIconList')
 const editSvg = require('../utils/editSvg')
 const createJs = require('../utils/createJs')
+const {JsonDB, Config} = require('node-json-db')
+var db = new JsonDB(new Config("iconDataBase", true, false, '/'));
 
 let src = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.iconPath.length; a++) {
@@ -39,7 +41,14 @@ const creatFont = (name) => {
       reject(e)
       return
     }
-    await editSvg(path.resolve(src, name))
+    await db.reload()
+    let removeColor = true
+    try {
+      removeColor = await db.getData(`/${name}/removeColor`)
+    } catch (e) {
+      console.log(e)
+    }
+    await editSvg(path.resolve(src, name), removeColor)
     console.log('svg目录', path.resolve(src, name))
     svgtofont({
       src: path.resolve(src, name), // svg path

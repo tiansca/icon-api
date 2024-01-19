@@ -16,6 +16,9 @@ const fs = require('fs')
 const userList = require("../config/user");
 const login = require("../utils/login");
 const isAdmin = require("../utils/isAdmin");
+const {calculateMac} = require("request/lib/hawk");
+const {JsonDB, Config} = require("node-json-db");
+var db = new JsonDB(new Config("iconDataBase", true, false, '/'));
 
 let src = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.iconPath.length; a++) {
@@ -91,6 +94,7 @@ router.get('/create_icon', async function (req, res, next) {
  * @apiName add_project
  * @apiGroup project
  * @apiParam {string} name 项目名称
+ * @apiParam {string} removeColor 是否去除颜色："true"、"false"
  * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {code: 0, data: '项目名称'}
@@ -99,8 +103,10 @@ router.get('/create_icon', async function (req, res, next) {
  */
 router.get('/add_project', async function (req, res, next) {
   const name = req.query.name
+  const removeColor = req.query.removeColor === 'true'
+  const model = req.query.model || 'css'
   try {
-    const data = await addProject(name)
+    const data = await addProject(name, removeColor, model)
     console.log(data)
     res.send({
       code: 0,
@@ -116,7 +122,7 @@ router.get('/add_project', async function (req, res, next) {
 });
 
 /**
- * @api {get} /icon/update_project 修改项目
+ * @api {get} /icon/update_project 修改项目名称
  * @apiDescription 修改项目名称
  * @apiName update_project
  * @apiGroup project
@@ -138,6 +144,38 @@ router.get('/update_project', async function (req, res, next) {
     res.send({
       code: 0,
       data: iconClass
+    })
+  } catch (e) {
+    console.log(e)
+    res.send({
+      code: -1,
+      data: e
+    })
+  }
+});
+
+/**
+ * @api {get} /icon/update_project_model 修改项目模式
+ * @apiDescription 修改项目模式
+ * @apiName update_project_model
+ * @apiGroup project
+ * @apiParam {string} name 项目名称
+ * @apiParam {string} model 模式名称
+ * @apiSuccess {json} result
+ * @apiSuccessExample {json} Success-Response:
+ *  {code: 0, data: '项目名称'}
+ * @apiSampleRequest http://localhost:3013/icon/update_project
+ * @apiVersion 1.0.0
+ */
+router.get('/update_project_model', async function (req, res, next) {
+  const name = req.query.name
+  const model = req.query.model
+  try {
+    // 更新模式
+    await db.push(`/${name}/model`, model);
+    res.send({
+      code: 0,
+      data: model
     })
   } catch (e) {
     console.log(e)
@@ -290,10 +328,24 @@ router.get('/get_icon_list', async function (req, res, next) {
     const fontPath = [...pathConfig.fontPath]
     fontPath.shift()
     const fontPathStr = fontPath.join('/')
+    await db.reload()
+    let removeColor = true
+    try {
+      removeColor = await db.getData(`/${name}/removeColor`)
+    } catch (e) {
+      console.log(e)
+    }
+
+    let model = 'css'
+    try {
+      model = await db.getData(`/${name}/model`)
+    } catch (e) {
+      console.log(e)
+    }
     // console.log('path', fontPathStr)
     res.send({
       code: 0,
-      data: {iconList: data, cssUrl: `${fontPathStr}/${name}/${name}.css`, jsUrl: `${fontPathStr}/${name}/${name}.js`}
+      data: {iconList: data, cssUrl: `${fontPathStr}/${name}/${name}.css`, jsUrl: `${fontPathStr}/${name}/${name}.js`, removeColor, model}
     })
   } catch (e) {
     console.log(e)

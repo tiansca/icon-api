@@ -20,6 +20,7 @@ const createJs = function (name) {
             }
             let svgContent = data
             svgContent = svgContent.replace('<svg xmlns="http://www.w3.org/2000/svg"', `<svg name=fonticon${name} xmlns="http://www.w3.org/2000/svg"`)
+            svgContent = svgContent.replace(/\n/g, "");
             // 创建文件并写入
             let jsContent = template.replace('{{svg}}', svgContent)
             jsContent = jsContent.replace('{{name}}', `fonticon${name}`)
