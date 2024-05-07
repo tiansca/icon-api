@@ -4,9 +4,9 @@ const userList = [{
   role: 'admin',
   password: 'admin@123'
 }, {
-  name: 'lingxiaoxi',
+  name: 'developer',
   role: 'dev',
-  password: 'Lingxi@123'
+  password: 'dev@123'
 }]
 
 module.exports = userList
