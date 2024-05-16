@@ -21,6 +21,7 @@ const deleteProject = (name) => {
     try {
       await deleteDir(path.resolve(dist, name))
       await deleteDir(path.resolve(src, name))
+      await db.reload()
       await db.delete(`/${name}`);
       resolve(name)
     } catch (e) {

@@ -29,6 +29,7 @@ const addProject = (name, removeColor, model = 'css') => {
       fs.mkdirSync(path.resolve(src, name))
       fs.mkdirSync(path.resolve(dist, name))
       // 记录项目是否去除颜色
+      await db.reload()
       await db.push(`/${name}`, {removeColor, model});
       resolve(name)
     } catch (e) {

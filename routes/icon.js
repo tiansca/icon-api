@@ -172,6 +172,7 @@ router.get('/update_project_model', async function (req, res, next) {
   const model = req.query.model
   try {
     // 更新模式
+    await db.reload()
     await db.push(`/${name}/model`, model);
     res.send({
       code: 0,
