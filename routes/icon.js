@@ -18,6 +18,9 @@ const login = require("../utils/login");
 const isAdmin = require("../utils/isAdmin");
 const {calculateMac} = require("request/lib/hawk");
 const {JsonDB, Config} = require("node-json-db");
+const {v4: uuidv4} = require("uuid");
+const fixSvg = require("../utils/uploadEdit");
+const copyFiles = require('../utils/copyFiles')
 var db = new JsonDB(new Config("iconDataBase", true, false, '/'));
 
 let src = path.resolve(__dirname, '../')
@@ -281,21 +284,34 @@ router.post('/upload_svg', async function (req, res, next) {
       return
     }
     if (!err) {
-      console.log('filesList', filesList)
-      for (let a = 0; a < filesList.length; a++) {
-        try {
-          if (filesList[a].mimetype === 'image/svg+xml') {
-            await uploadFile(filesList[a], filed.name)
+      try {
+        // console.log('filesList', filesList)
+        const edit = filed.edit
+        const name = edit ? `${filed.name}_${uuidv4()}` : filed.name
+        for (let a = 0; a < filesList.length; a++) {
+          try {
+            if (filesList[a].mimetype === 'image/svg+xml') {
+              await uploadFile(filesList[a], name)
+            }
+          } catch (e) {
+            console.log(e)
           }
-        } catch (e) {
-          console.log(e)
         }
+        // 编辑上传的svg
+        if (edit) {
+          await fixSvg(name)
+          // 将name下的文件复制到filed.name下
+          await copyFiles(name, filed.name)
+        }
+        const iconClass = await createIcon(filed.name)
+        res.send({
+          code: 0,
+          data: iconClass
+        })
+      } catch (e) {
+        res.send(e)
       }
-      const iconClass = await createIcon(filed.name)
-      res.send({
-        code: 0,
-        data: iconClass
-      })
+
     } else {
       res.send(err)
     }

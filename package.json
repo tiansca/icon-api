@@ -19,7 +19,9 @@
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "node-json-db": "^2.3.0",
+    "oslllo-svg-fixer": "^5.0.0",
     "request": "^2.88.2",
-    "svgtofont": "3.19.0"
+    "svgtofont": "3.10.0",
+    "uuid": "^10.0.0"
   }
 }

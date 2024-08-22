@@ -1,3 +1,4 @@
+// 在生成图标前处理svg图片内容
 const fs = require('fs')
 const path = require('path');
 const jsdom = require("jsdom");
@@ -16,28 +17,31 @@ const editSvg = (src, removeColor = false) => {
             return
           }
           const document = new JSDOM(data).window.document;
-          // 删除defs
-          const defs = document.querySelectorAll('defs')
+          // 删除defs和mask
+          const defs = document.querySelectorAll('defs, mask')
           if (defs) {
             for (let c = 0; c < defs.length; c++) {
               defs[c].remove()
             }
           }
 
-          // 删除有填充色的rect
-          const rect = document.querySelectorAll('rect')
-          if (rect) {
-            console.log('长度', rect.length)
-            for (let b = 0; b < rect.length; b++) {
-              if (rect[b].hasAttribute('fill')) {
-                rect[b].remove()
-              } else {
-                rect[b].setAttribute('fill', 'none')
-              }
+          // 删除背景色，g标签，子元素title标签且内容为background，codesign平台
+          const g = document.querySelectorAll('g')
+          for (let i = 0; i < g.length; i++) {
+            const title = g[i].querySelector('title')
+            if (title && title.innerHTML.toLowerCase() === 'background') {
+              g[i].remove()
             }
           }
-          // 删除id包含“Background”的path
-          const path = document.querySelectorAll('path, polyline, g')
+          // 删除背景色，path或者polyline标签，id包含background，蓝湖平台
+          const paths = document.querySelectorAll('path,polyline')
+          for (let i = 0; i < paths.length; i++) {
+            if (paths[i].id && paths[i].id.toLowerCase().indexOf('background') !== -1) {
+              paths[i].remove()
+            }
+          }
+          // 获取有效元素，删除有background的元素,处理颜色
+          const path = document.querySelectorAll('path,rect,circle,ellipse,line,polygon,polyline')
           if (path) {
             for (let c = 0; c < path.length; c++) {
               const pathId = path[c].getAttribute('id')
@@ -55,6 +59,8 @@ const editSvg = (src, removeColor = false) => {
                   path[c].setAttribute('fill', 'currentColor')
                 } else if (stroke && stroke !== 'currentColor') {
                   path[c].setAttribute('stroke', 'currentColor')
+                } else if (!fill && !stroke) {
+                  path[c].setAttribute('fill', 'currentColor')
                 }
               }
             }
@@ -68,7 +74,7 @@ const editSvg = (src, removeColor = false) => {
           // console.log(content)
           fs.writeFile(filePath, content, (err) => {
             count++
-            console.log(count, files.length)
+            // console.log(count, files.length)
             if (count === files.length) {
               resolve()
             }
