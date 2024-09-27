@@ -40,6 +40,11 @@ const editSvg = (src, removeColor = false) => {
               paths[i].remove()
             }
           }
+          // 删除title标签
+          const titles = document.querySelectorAll('title')
+          for (let i = 0; i < titles.length; i++) {
+            titles[i].remove()
+          }
           // 获取有效元素，删除有background的元素,处理颜色
           const path = document.querySelectorAll('path,rect,circle,ellipse,line,polygon,polyline')
           if (path) {

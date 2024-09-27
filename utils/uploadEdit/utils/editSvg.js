@@ -37,6 +37,13 @@ const editSvg = (src) => {
               defs[c].remove()
             }
           }
+          // 校验viewBox和width、height
+          const svg = document.querySelector('svg')
+          if (svg.getAttribute('viewBox')){
+            const viewBox = svg.getAttribute('viewBox').split(' ')
+            svg.setAttribute('width', viewBox[2])
+            svg.setAttribute('height', viewBox[3])
+          }
           // 删除背景色，g标签，子元素title标签且内容为background，codesign平台
           const g = document.querySelectorAll('g')
           for (let i = 0; i < g.length; i++) {
