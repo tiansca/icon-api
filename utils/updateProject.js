@@ -3,7 +3,7 @@ const pathConfig = require('../config/path')
 const fileExists = require('../utils/fileExists')
 const fs = require('fs')
 const {JsonDB, Config} = require('node-json-db')
-var db = new JsonDB(new Config("iconDataBase", true, false, '/'));
+var db = require('./jsonDb');
 
 let src = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.iconPath.length; a++) {
@@ -39,7 +39,7 @@ const updateProject = (name, newName) => {
       fs.renameSync(path.resolve(src, name),path.resolve(src, newName))
       fs.renameSync(path.resolve(dist, name),path.resolve(dist, newName))
       // 保存到json-db
-      await db.reload()
+      // await db.reload()
       // 获取旧值
       let removeColor = true
       try {

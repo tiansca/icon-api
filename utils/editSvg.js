@@ -71,8 +71,29 @@ const editSvg = (src, removeColor = false) => {
             }
           }
           // 给svg添加透明填充
-          if (document.querySelector('svg')) {
+          if (document.querySelector('svg') && removeColor) {
             document.querySelector('svg').setAttribute('fill', 'transparent')
+          } else if (document.querySelector('svg')) {
+            // 保留颜色,若fill都为空，则填充默认颜色
+            const labels = document.querySelectorAll('path,rect,circle,ellipse,line,polygon,polyline')
+            let hasFillOrStroke = false
+            for (let i = 0; i < labels.length; i++) {
+              const fill = labels[i].getAttribute('fill')
+              const stroke = labels[i].getAttribute('stroke')
+              if (fill && fill !== 'none') {
+                hasFill = true
+                break
+              }
+              if (stroke && stroke !== 'none') {
+                hasStroke = true
+                break
+              }
+            }
+            if (!hasFill) {
+              for (let i = 0; i < labels.length; i++) {
+                labels[i].setAttribute('fill', '#000')
+              }
+            }
           }
           // const content = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' + document.querySelector('svg').outerHTML
           const content = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' + document.querySelector('svg').outerHTML

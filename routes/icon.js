@@ -21,7 +21,7 @@ const {JsonDB, Config} = require("node-json-db");
 const {v4: uuidv4} = require("uuid");
 const fixSvg = require("../utils/uploadEdit");
 const copyFiles = require('../utils/copyFiles')
-var db = new JsonDB(new Config("iconDataBase", true, false, '/'));
+var db = require('../utils/jsonDb');
 
 let src = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.iconPath.length; a++) {
@@ -32,33 +32,41 @@ for (let a = 0; a < pathConfig.iconPath.length; a++) {
 // var update = require('../utils/update')
 // var encrypt = require('../utils/encrypt')
 
-const whiteList = ['/download']
-
-// 判断header是否有token
-router.use(async function (req, res, next) {
-  // 放行白名单接口
-  if (whiteList.includes(req.path)) {
-    next()
-    return
-  }
-  if (req.headers && req.headers.authorization) {
-    try {
-      const userObj = JSON.parse(Buffer.from(req.headers.authorization, 'base64').toString('ascii'))
-      const data = await login(userObj.name, userObj.password)
-      next()
-    } catch (e) {
-      res.send({
-        code: -1,
-        message: '请登录'
-      })
-    }
-  } else {
-    res.send({
-      code: -1,
-      message: '请登录'
-    })
-  }
-});
+// const whiteList = ['/download']
+//
+// // 判断header是否有token
+// router.use(async function (req, res, next) {
+//   // 放行白名单接口
+//   console.log('path', req.path)
+//   if (whiteList.includes(req.path)) {
+//     next()
+//     return
+//   }
+//   if (req.headers && req.headers.authorization) {
+//     try {
+//       const userObj = JSON.parse(Buffer.from(req.headers.authorization, 'base64').toString('ascii'))
+//       const data = await login(userObj.name, userObj.password)
+//       if (data.role !== userObj.role) {
+//         return res.send({
+//           code: -1,
+//           message: '请登录',
+//           error: '角色不匹配'
+//         })
+//       }
+//       next()
+//     } catch (e) {
+//       res.send({
+//         code: -1,
+//         message: '请登录'
+//       })
+//     }
+//   } else {
+//     res.send({
+//       code: -1,
+//       message: '请登录'
+//     })
+//   }
+// });
 
 /**
  * @api {get} /icon/create_icon 生成字体图标
@@ -175,7 +183,7 @@ router.get('/update_project_model', async function (req, res, next) {
   const model = req.query.model
   try {
     // 更新模式
-    await db.reload()
+    // await db.reload()
     await db.push(`/${name}/model`, model);
     res.send({
       code: 0,
@@ -345,7 +353,7 @@ router.get('/get_icon_list', async function (req, res, next) {
     const fontPath = [...pathConfig.fontPath]
     fontPath.shift()
     const fontPathStr = fontPath.join('/')
-    await db.reload()
+    // await db.reload()
     let removeColor = true
     try {
       removeColor = await db.getData(`/${name}/removeColor`)
@@ -435,6 +443,7 @@ router.get('/delete_icon', async function (req, res, next) {
  * @apiVersion 1.0.0
  */
 router.get('/download', async function (req, res, next) {
+  console.log(req.path)
   const name = req.query.name
   const className = req.query.className.replace(`${name}-`, '')
   if (!name || !className) {

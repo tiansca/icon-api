@@ -1,5 +1,5 @@
 const config = {
-  iconPath: ['icon'],
+  iconPath: ['public', 'icons'],
   fontPath: ['public', 'fonts']
 }
 module.exports = config

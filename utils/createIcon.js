@@ -6,7 +6,7 @@ const getIconList = require('../utils/getIconList')
 const editSvg = require('../utils/editSvg')
 const createJs = require('../utils/createJs')
 const {JsonDB, Config} = require('node-json-db')
-var db = new JsonDB(new Config("iconDataBase", true, false, '/'));
+var db = require('./jsonDb');
 
 let src = path.resolve(__dirname, '../')
 for (let a = 0; a < pathConfig.iconPath.length; a++) {
@@ -41,7 +41,7 @@ const creatFont = (name) => {
       reject(e)
       return
     }
-    await db.reload()
+    // await db.reload()
     let removeColor = true
     try {
       removeColor = await db.getData(`/${name}/removeColor`)
@@ -56,7 +56,7 @@ const creatFont = (name) => {
       fontName: name, // font name
       css: true, // Create CSS files.
       svgicons2svgfont: {
-        fontHeight: 64, // 字体高度
+        fontHeight: 1024, // 字体高度
         normalize: true // 通过将图标缩放到最高图标的高度来标准化图标。
       },
       website : null,

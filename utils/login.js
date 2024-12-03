@@ -1,13 +1,17 @@
-const userList = require('../config/user')
+const userDB = require('../utils/userDb')
 const login = (name, password) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     if (!name || !password) {
       return reject('用户名或密码错误')
     }
     try {
-      const user = userList.find(item => {
-        return item.name === name
-      })
+      // 判断用户名是否存在
+      const isExists = await userDB.exists(`/${name}`)
+      if (!isExists) {
+        return reject('用户名或密码错误')
+      }
+      // 查找用户
+      const user = await userDB.getData(`/${name}`)
       if (password === user.password) {
         // console.log()  // hello
         return resolve({

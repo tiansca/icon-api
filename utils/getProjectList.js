@@ -28,7 +28,7 @@ const getList = () => {
               const fontPath = [...pathConfig.fontPath]
               fontPath.shift()
               const fontPathStr = fontPath.join('/')
-              await db.reload()
+              // await db.reload()
               let removeColor = true
               try {
                 removeColor = await db.getData(`/${files[i]}/removeColor`)
@@ -42,11 +42,17 @@ const getList = () => {
               } catch (e) {
                 console.log(e)
               }
+              let iconList = []
+              try {
+                iconList = await getIconList(files[i])
+              } catch (e) {
+                console.log(e)
+              }
               dirs.push({
                 name: files[i],
                 updateTime: data.mtime,
                 updateTimestamp: data.mtime.valueOf(),
-                iconList: await getIconList(files[i]),
+                iconList: iconList,
                 cssUrl: `${fontPathStr}/${files[i]}/${files[i]}.css`, //css链接
                 jsUrl: `${fontPathStr}/${files[i]}/${files[i]}.js`,
                 removeColor: removeColor,
