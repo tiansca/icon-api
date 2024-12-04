@@ -1,4 +1,4 @@
-FROM node:18.18.2
+FROM node:22.1.0
 WORKDIR /app
 # 将 package.json 和 package-lock.json 复制到 /app 目录下
 COPY package*.json ./
