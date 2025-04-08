@@ -1,1 +1,1 @@
-{"admin":{"name":"admin","password":"admin@123","role":"admin"}}
+{"admin":{"name":"admin","password":"admin@123","role":"admin"},"dev":{"name":"dev","password":"dev@123","role":"dev"}}

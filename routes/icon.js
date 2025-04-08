@@ -272,8 +272,8 @@ router.get('/get_projects', async function (req, res, next) {
  * @apiVersion 1.0.0
  */
 router.post('/upload_svg', async function (req, res, next) {
-  const filesList = []
-  const form = new formidable.IncomingForm();
+  let filesList = []
+  let form = new formidable.IncomingForm();
   form.keepExtensions = true;
   form.on('file', function (filed, file) {
     console.log(filed)
@@ -289,6 +289,7 @@ router.post('/upload_svg', async function (req, res, next) {
         code: -1,
         data: '缺少参数name'
       })
+      form = null
       return
     }
     if (!err) {
@@ -323,6 +324,8 @@ router.post('/upload_svg', async function (req, res, next) {
     } else {
       res.send(err)
     }
+    form = null
+    filesList = null
   });
 });
 

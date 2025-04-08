@@ -16,7 +16,7 @@ const editSvg = (src, removeColor = false) => {
             reject(err)
             return
           }
-          const document = new JSDOM(data).window.document;
+          let document = new JSDOM(data).window.document;
           // 删除defs和mask
           const defs = document.querySelectorAll('defs, mask')
           if (defs) {
@@ -81,15 +81,15 @@ const editSvg = (src, removeColor = false) => {
               const fill = labels[i].getAttribute('fill')
               const stroke = labels[i].getAttribute('stroke')
               if (fill && fill !== 'none') {
-                hasFill = true
+                hasFillOrStroke = true
                 break
               }
               if (stroke && stroke !== 'none') {
-                hasStroke = true
+                hasFillOrStroke = true
                 break
               }
             }
-            if (!hasFill) {
+            if (!hasFillOrStroke) {
               for (let i = 0; i < labels.length; i++) {
                 labels[i].setAttribute('fill', '#000')
               }
@@ -105,6 +105,8 @@ const editSvg = (src, removeColor = false) => {
               resolve()
             }
           })
+          document.close()
+          document = null
         })
       }
     })
