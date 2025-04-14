@@ -16,4 +16,4 @@ COPY . .
 ENV NODE_ENV=production
 
 EXPOSE 3013
-CMD node bin/www
+CMD node  --expose-gc bin/www
