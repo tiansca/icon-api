@@ -49,7 +49,7 @@ const creatFont = (name) => {
       console.log(e)
     }
     await editSvg(path.resolve(src, name), removeColor)
-    console.log('svg目录', path.resolve(src, name))
+    // console.log('svg目录', path.resolve(src, name))
     svgtofont({
       src: path.resolve(src, name), // svg path
       dist: path.resolve(dist, name), // output path

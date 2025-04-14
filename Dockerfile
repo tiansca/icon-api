@@ -12,6 +12,8 @@ RUN npm install
 # 将源代码复制到 /app 目录下
 COPY . .
 
+# 环境变量
+ENV NODE_ENV=production
 
 EXPOSE 3013
 CMD node bin/www

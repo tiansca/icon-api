@@ -19,7 +19,7 @@ const uploadFile = (file, name) => {
     fs.readFile(file.filepath, function (error, data) {
       fs.writeFile(path.resolve(src, name, file.originalFilename), data, function (err) {
         if (err) reject(err);
-        console.log('It\'s saved!');
+        // console.log('It\'s saved!');
         fs.unlink(file.filepath, function () {
           console.log(err)
         });

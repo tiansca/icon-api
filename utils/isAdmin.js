@@ -6,7 +6,7 @@ const isAdmin = (token) => {
     }
     try {
       const userObj = JSON.parse(Buffer.from(token, 'base64').toString('ascii'))
-      console.log(userObj.role)
+      // console.log(userObj.role)
       if (userObj.role !== 'admin') {
         throw Error()
       }

@@ -16,9 +16,12 @@ function fixSvg(name) {
         showProgressBar: false,
         throwIfDestinationDoesNotExist: false,
       }
-      const SVG = SVGFixer(path.resolve(src, name), path.resolve(src, name), options)
+      let SVG = SVGFixer(path.resolve(src, name), path.resolve(src, name), options)
       SVG.fix().then(() => {
+        // 释放资源
+        SVG = null
         resolve()
+        if (global.gc) global.gc();
       }).catch(e => {
         reject()
       })

@@ -8,7 +8,7 @@ const editSvg = (src) => {
   return new Promise((resolve, reject) => {
     fs.readdir(src, function(err, files) {
       let count = 0
-      console.log('******************', src, files)
+      // console.log('******************', src, files)
       for (let a = 0; a < files.length; a++) {
         const filePath = path.resolve(src, files[a])
         // 判断是文件还是文件夹

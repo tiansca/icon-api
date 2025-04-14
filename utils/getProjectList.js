@@ -5,7 +5,7 @@ const getIconList = require('../utils/getIconList')
 const db = require('./jsonDb')
 
 let dist = path.resolve(__dirname, '../')
-console.log(dist)
+// console.log(dist)
 for (let a = 0; a < pathConfig.fontPath.length; a++) {
   dist = path.resolve(dist, pathConfig.fontPath[a])
 }
@@ -59,10 +59,10 @@ const getList = () => {
                 model: model
               });
             } else {
-              console.log(files[i])
+              // console.log(files[i])
             }
             count++
-            console.log(count, files.length)
+            // console.log(count, files.length)
             if (count >= files.length) {
               // 时间倒序
               dirs.sort((a, b) => {

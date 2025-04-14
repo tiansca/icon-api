@@ -54,4 +54,7 @@ app.use(function(err, req, res, next) {
 
 // apidoc 生成命令 apidoc -i routes -o public/apidoc
 
+// 设置生产环境
+process.env.NODE_ENV = 'production';
+
 module.exports = app;

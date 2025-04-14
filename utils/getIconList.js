@@ -12,7 +12,7 @@ const getIconList = (name) => {
     const dirs = [];
     let count = 0
     try {
-      console.log(name)
+      // console.log(name)
       const projectPath = path.resolve(src, name)
       fs.readdir(projectPath, function(err, files){
         if (!err) {

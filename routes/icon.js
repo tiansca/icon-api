@@ -249,6 +249,8 @@ router.get('/get_projects', async function (req, res, next) {
       code: 0,
       data: data
     })
+    global.gc();
+    console.log(process.memoryUsage());
   } catch (e) {
     console.log(e)
     res.send({
