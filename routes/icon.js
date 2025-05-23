@@ -213,8 +213,8 @@ router.get('/update_project_model', async function (req, res, next) {
 router.get('/delete_project', async function (req, res, next) {
   const name = req.query.name
   try {
-    await isAdmin(req.headers.authorization)
-    console.log('通过')
+    // await isAdmin(req.headers.authorization)
+    // console.log('通过')
     const data = await deleteProject(name)
     console.log(data)
     res.send({
@@ -278,7 +278,7 @@ router.post('/upload_svg', async function (req, res, next) {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
   form.on('file', function (filed, file) {
-    console.log(filed)
+    console.log("收到文件",  file)
     filesList.push(file);
   });
   // var filesName = req.body.fieldName || 'image' // 获取文件
@@ -411,7 +411,7 @@ router.get('/delete_icon', async function (req, res, next) {
     return
   }
   try {
-    await isAdmin(req.headers.authorization) // 校验权限
+    // await isAdmin(req.headers.authorization) // 校验权限
     fs.unlink(path.resolve(src, name, `${className}.svg`), (err) => {
       if (!err) {
         res.send({

@@ -22,7 +22,7 @@ router.use(async function (req, res, next) {
   }
   // 构建正则
   const reg = new RegExp(whiteList.join('|'))
-  console.log(reg)
+  // console.log(reg)
   if (reg.test(req.path)) {
     next()
     return
@@ -30,26 +30,19 @@ router.use(async function (req, res, next) {
   // for (let i = 0; i < whiteList; i++) {
   //
   // }
-  if (req.headers && req.headers.authorization) {
-    try {
-      const userObj = JSON.parse(Buffer.from(req.headers.authorization, 'base64').toString('ascii'))
-      const data = await login(userObj.name, userObj.password)
-      if (data.role !== userObj.role) {
-        return res.send({
-          code: -1,
-          message: '请登录',
-          error: '角色不匹配'
-        })
-      }
-      next()
-    } catch (e) {
-      res.send({
-        code: -1,
-        message: '请登录',
-        error: e
-      })
-    }
+  // console.log(req.headers)
+  // 没有 secretkey
+  if (!req.headers || req.headers.secretkey !== "icon_library") {
+    res.send({
+      code: -1,
+      data: '签名错误'
+    })
+    return
+  }
+  if (req.headers && req.headers.userid) {
+    next()
   } else {
+    console.log('未登录')
     res.send({
       code: -1,
       message: '请登录',

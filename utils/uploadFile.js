@@ -11,6 +11,7 @@ for (let a = 0; a < pathConfig.iconPath.length; a++) {
 // name: 项目名
 // edit: 是否编辑
 const uploadFile = (file, name) => {
+  console.log('上传文件', file.originalFilename)
   return new Promise((resolve, reject) => {
     // 判断路径是否存在， 不存在创建
     if (!fs.existsSync(path.resolve(src, name))) {

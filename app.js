@@ -14,16 +14,16 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-//设置跨域访问
-app.all('*', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Token');
-  res.header('Access-Control-Allow-Methods', '*');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  // res.header('Content-Type', 'application/json;charset=utf-8');
-  next();
-});
+// 设置跨域访问，经过网关转发则不需要设置
+// app.all('*', (req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', req.headers.origin);
+//   //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Token');
+//   res.header('Access-Control-Allow-Methods', '*');
+//   res.header('Access-Control-Allow-Credentials', 'true');
+//   // res.header('Content-Type', 'application/json;charset=utf-8');
+//   next();
+// });
 
 app.use(logger('dev'));
 app.use(express.json());
