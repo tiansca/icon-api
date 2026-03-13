@@ -43,6 +43,16 @@ const editSvg = (src) => {
             const viewBox = svg.getAttribute('viewBox').split(' ')
             svg.setAttribute('width', viewBox[2])
             svg.setAttribute('height', viewBox[3])
+          } else {
+            // 如果有width和height属性，设置viewBox属性
+            var width = svg.getAttribute('width')
+            var height = svg.getAttribute('height')
+            if (width && height) {
+              // 去掉 单位
+              width = width.replace(/[a-zA-Z]/g, '')
+              height = height.replace(/[a-zA-Z]/g, '')
+              svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height)
+            }
           }
           // 删除背景色，g标签，子元素title标签且内容为background，codesign平台
           const g = document.querySelectorAll('g')
